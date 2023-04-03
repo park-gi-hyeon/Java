@@ -11,22 +11,16 @@ class Pointfour{
 public class PositivePoint extends Pointfour{
 	public PositivePoint(){super(0,0);}
 	
-//	protected void move(int x,int y) {
-//		if (x>=0&&y>=0) {
-//			super.move(x, y);
-//		}
-//	}
+	protected void move(int x,int y) {
+		if (x>=0&&y>=0) {
+			super.move(x, y);
+		}
+	}
 	public PositivePoint(int x, int y) {
-//		super(x,y);
-//		if (x<0||y<0) {
-//			move(0,0);
-//		} else {
-//			super.move(x, y);
-//		}
-		super(x, y);
-	    if (x < 0 || y < 0) {
-	        super.move(0, 0);
-	    }
+		super(x,y);
+		if (x<0||y<0) {
+			move(0,0);
+		}
 	}
 	
 	public String toString() {
