@@ -131,6 +131,7 @@ public class MemberDBBean {
 			pstmt.setNString(1, id);
 			rs = pstmt.executeQuery();
 			
+			
 			if (rs.next()) {
 				member = new MemberBean();
 				member.setMem_uid(rs.getString("mem_uid"));

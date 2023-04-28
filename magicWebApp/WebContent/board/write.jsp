@@ -1,6 +1,10 @@
+<%
+    request.setCharacterEncoding("utf-8");
+ 	%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+ 
 <html>
 <head>
 <meta charset="UTF-8">
@@ -37,6 +41,7 @@
 					<td colspan="4">
 						<input type="button" value="글쓰기" onclick="check_ok()"> &nbsp
 						<input type="reset" value="다시입력">
+						<input type="button" value="글목록" onclick="javascript:window.location='list.jsp'">
 					</td>
 				</tr>
 			</table>

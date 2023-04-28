@@ -1,12 +1,21 @@
 package board;
 
+import java.sql.Timestamp;
+
 public class BoardBean {
 	private int B_id;
 	private String B_name;
 	private String B_email;
 	private String B_title;
 	private String B_content;
+	private Timestamp B_date;
 	
+	public Timestamp getB_date() {
+		return B_date;
+	}
+	public void setB_date(Timestamp b_date) {
+		B_date = b_date;
+	}
 	public String getB_name() {
 		return B_name;
 	}
