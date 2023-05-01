@@ -28,6 +28,8 @@
 			<tr align="center" height="30">
 				<td width="100">글 번호</td>
 				<td width="200"><%=bb.getB_id() %></td>
+				<td width="100">조회수</td>
+				<td width="200"><%=bb.getB_hit() %></td>
 			</tr>
 			<tr height="30" align="center">
 				<td width="100">작성자</td>
@@ -42,6 +44,11 @@
 			<tr height="30" align="center">
 				<td width="100">글내용</td>
 				<td width="200" align="left" colspan="4" ><%= bb.getB_content() %></td>
+			</tr>
+			<tr height="30" align="center">
+				<td colspan="5" align="right">
+					<input type="button" value="글삭제" onclick="javascript:window.location='delete.jsp?b_id=<%=b_id%>'">
+				</td>
 			</tr>
 		</table>
 	</center>

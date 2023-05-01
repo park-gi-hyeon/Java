@@ -9,7 +9,21 @@ public class BoardBean {
 	private String B_title;
 	private String B_content;
 	private Timestamp B_date;
+	private int B_hit;
+	private String B_pwd;
 	
+	public String getB_pwd() {
+		return B_pwd;
+	}
+	public void setB_pwd(String b_pwd) {
+		B_pwd = b_pwd;
+	}
+	public int getB_hit() {
+		return B_hit;
+	}
+	public void setB_hit(int B_hit) {
+		this.B_hit = B_hit;
+	}
 	public Timestamp getB_date() {
 		return B_date;
 	}

@@ -32,6 +32,7 @@
 					<td align="center" width="500">글제목</td>
 					<td align="center" width="200">작성자</td>
 					<td align="center" width="200">작성일</td>
+					<td align="center" width="200">조회수</td>
 				</tr>
 				<%
 					BoardDBBean db = BoardDBBean.getinstance();
@@ -49,6 +50,7 @@
 						String b_title = board.getB_title();
 						String b_content = board.getB_content();
 						Timestamp b_date = board.getB_date();
+						int b_hit = board.getB_hit();
 				%>
 				<tr bgcolor="#f7f7f7" 
 				onmouseover="this.style.backgroundColor='#eeeeef'" 
@@ -64,6 +66,7 @@
 						</a>
 					</td>
 					<td><%= sdf.format(b_date) %></td>
+					<td><%= b_hit %></td>
 				</tr>
 				<% 
 					}
