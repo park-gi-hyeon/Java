@@ -15,6 +15,7 @@
 </head>
 <body>
 	<%
+		board.setB_ip(request.getRemoteAddr());
 		board.setB_date(new Timestamp(System.currentTimeMillis()));
 		BoardDBBean db = BoardDBBean.getinstance();
 		int re = db.insertBoard(board);
@@ -22,16 +23,16 @@
 			%>
 				<script>
 					alert("글을 등록하셨습니다.");
+					location.href="list.jsp";
 				</script>
 			<%
-			response.sendRedirect("list.jsp");
 		}else{// 글 등록 실패
 			%>
 			<script>
 				alert("글 등록이 실패했습니다.");
+				location.href="write.jsp";
 			</script>
 		<%
-		response.sendRedirect("write.jsp");
 		}
 	%>
 </body>

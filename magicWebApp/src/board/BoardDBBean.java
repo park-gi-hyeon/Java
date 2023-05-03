@@ -44,7 +44,7 @@ public class BoardDBBean {
 //			}
 			
 			sql = "INSERT INTO boardt "
-					+ "VALUES((select nvl(max(b_id),0)+1 from boardt),?,?,?,?,?,?,?)";
+					+ "VALUES((select nvl(max(b_id),0)+1 from boardt),?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);			
 //			pstmt.setInt(1, num);
 			pstmt.setString(1, board.getB_name());
@@ -55,6 +55,7 @@ public class BoardDBBean {
 //			pstmt.setInt(6, board.getB_hit());
 			pstmt.setInt(6, 0); // insert부분에서 초기값을 설정을 해주지않아서 null일경우 오류문제가 생길 수 있다.
 			pstmt.setString(7, board.getB_pwd());
+			pstmt.setString(8, board.getB_ip());
 			
 			pstmt.executeUpdate();
 			re = 1;
@@ -91,7 +92,8 @@ public class BoardDBBean {
 				board.setB_content(rs.getString(5));
 				board.setB_date(rs.getTimestamp(6));
 				board.setB_hit(rs.getInt(7));
-				board.setB_pwd(rs.getNString(8));
+				board.setB_pwd(rs.getString(8));
+				board.setB_ip(rs.getString(9));
 				//여기까지가 1행을 가져와서 저장
 				
 				//행의 데이터를 ArrayList에 저장
@@ -120,14 +122,14 @@ public class BoardDBBean {
 				pstmt.setInt(1, num);
 				rs = pstmt.executeQuery();
 				
-				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd "
+				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd,b_ip "
 						+ "from boardt where b_id=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, num);
 				rs = pstmt.executeQuery();
 			}else {
 	//			글 내용 보기
-				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd "
+				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd,b_ip "
 						+ "from boardt where b_id=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, num);
@@ -135,13 +137,14 @@ public class BoardDBBean {
 			}
 			if(rs.next()) {
 				board.setB_id(num);
-				board.setB_name(rs.getNString("b_name"));
-				board.setB_email(rs.getNString("b_email"));
+				board.setB_name(rs.getString("b_name"));
+				board.setB_email(rs.getString("b_email"));
 				board.setB_title(rs.getString("b_title"));
 				board.setB_content(rs.getString("b_content"));
 				board.setB_date(rs.getTimestamp("b_date"));
 				board.setB_hit(rs.getInt("b_hit"));
 				board.setB_pwd(rs.getString("b_pwd"));
+				board.setB_ip(rs.getString("b_ip"));
 				rs.close();
 				pstmt.close();
 				conn.close();

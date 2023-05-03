@@ -11,7 +11,14 @@ public class BoardBean {
 	private Timestamp B_date;
 	private int B_hit;
 	private String B_pwd;
+	private String B_ip;
 	
+	public String getB_ip() {
+		return B_ip;
+	}
+	public void setB_ip(String b_ip) {
+		B_ip = b_ip;
+	}
 	public String getB_pwd() {
 		return B_pwd;
 	}
