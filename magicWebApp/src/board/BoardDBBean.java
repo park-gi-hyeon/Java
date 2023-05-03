@@ -10,6 +10,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import javafx.scene.layout.Border;
+
 public class BoardDBBean {
 	private static BoardDBBean instance = new BoardDBBean();
 	
@@ -21,7 +23,7 @@ public class BoardDBBean {
 		DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/oracle");
 		return ds.getConnection();
 	}
-	
+	// 정보를 삽입하는 메소드
 	public int insertBoard(BoardBean board){
 		int re = -1;
 		int num;
@@ -66,6 +68,7 @@ public class BoardDBBean {
 		}
 		return re;
 	}
+	// 모든 게시글의 정보가 담긴 메소드
 	public ArrayList<BoardBean> listBoard(){
 		Connection conn= null;
 		Statement stmt = null;
@@ -100,8 +103,8 @@ public class BoardDBBean {
 		}
 		return boardList;
 	}
-	
-	public BoardBean getBoard(int num) {
+	// 프라이머리 키가 일치하는 것으로 조회수가 올라가고 게시글의 정보를 얻어오는 메소드
+	public BoardBean getBoard(int num, boolean count) {
 		Connection conn= null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -110,18 +113,26 @@ public class BoardDBBean {
 		try {
 			conn = getConnection();
 //			조회수 1증가 sql
-			sql = "update boardt set b_hit = b_hit+1 where b_id=?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, num);
-			rs = pstmt.executeQuery();
 			
-//			글 내용 보기
-			sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd "
-					+ "from boardt where b_id=?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, num);
-			rs = pstmt.executeQuery();
-			
+			if(count == true) {
+				sql = "update boardt set b_hit = b_hit+1 where b_id=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, num);
+				rs = pstmt.executeQuery();
+				
+				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd "
+						+ "from boardt where b_id=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, num);
+				rs = pstmt.executeQuery();
+			}else {
+	//			글 내용 보기
+				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd "
+						+ "from boardt where b_id=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, num);
+				rs = pstmt.executeQuery();
+			}
 			if(rs.next()) {
 				board.setB_id(num);
 				board.setB_name(rs.getNString("b_name"));
@@ -140,7 +151,7 @@ public class BoardDBBean {
 		}
 		return board;
 	}
-	
+	// 삭제시키는 메소드
 	public int deleteBoard(int num,String pwd) {
 		Connection con= null;
 		PreparedStatement pstmt = null;
@@ -168,6 +179,45 @@ public class BoardDBBean {
 				re=-2;
 			}
 		} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return re;
+	}
+	// 수정하는 메소드
+	public int editBoard(BoardBean board) {
+		Connection conn= null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql ="";
+		String pwd = "";
+		int re = -1;
+		
+		try {
+			conn = getConnection();
+			sql = "select b_pwd from boardt where b_id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board.getB_id());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {//비밀번호가 있으면 참
+				pwd = rs.getString(1);//비밀번호를 가져옴
+				if(pwd.equals(board.getB_pwd())) {//비밀번호 일치 수정성공
+					sql="update boardt set b_name=?,b_email=?,b_title=?,b_content=? "
+							+ "where b_id=?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, board.getB_name());
+					pstmt.setString(2, board.getB_email());
+					pstmt.setString(3, board.getB_title());
+					pstmt.setString(4, board.getB_content());
+					pstmt.setInt(5, board.getB_id());
+					pstmt.executeUpdate();
+					re=1;
+				}else {//비밀번호 불일치
+					re = 0;
+				}
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

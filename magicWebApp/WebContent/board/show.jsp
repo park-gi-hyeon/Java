@@ -12,7 +12,7 @@
 	BoardDBBean db = new BoardDBBean();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 	//board 객체에 게시글의 정보가 저장되어 있음
-	BoardBean bb=db.getBoard(b_id);
+	BoardBean bb=db.getBoard(b_id,true);
 %>
 <html>
 <head>
@@ -47,6 +47,8 @@
 			</tr>
 			<tr height="30" align="center">
 				<td colspan="5" align="right">
+					<input type="button" value="글수정" onclick="javascript:window.location='edit.jsp?b_id=<%=b_id%>'">
+					<input type="reset" value="다시 작성">
 					<input type="button" value="글삭제" onclick="javascript:window.location='delete.jsp?b_id=<%=b_id%>'">
 				</td>
 			</tr>
