@@ -51,12 +51,29 @@
 						String b_content = board.getB_content();
 						Timestamp b_date = board.getB_date();
 						int b_hit = board.getB_hit();
+						int b_level = board.getB_level();
 				%>
 				<tr bgcolor="#f7f7f7" 
 				onmouseover="this.style.backgroundColor='#eeeeef'" 
 				onmouseout="this.style.backgroundColor='#f7f7f7'">
 					<td align="center"><%= b_id %></td>
-					<td><a href="show.jsp?b_id=<%= b_id %>">
+					<td>
+					<%
+// 						b_level 기준으로 화살표 이미지를 들여쓰기로 출력
+						if(b_level > 0){//답변글
+							for(int j =0; j<b_level; j++){//for 기준으로 들여쓰기를 얼마만큼 할것인지
+					%>
+								&nbsp;
+					<% 
+							}
+// 						 	들여쓰기가 적용된 시점 ->이미지 추가
+					%>
+						<img src="../images/AnswerLine.gif" width="16" height="16">
+					<% 
+						}
+					%>
+<!-- 					글 번호를 가지고 글내용 보기 페이지로 이동 -->
+					<a href="show.jsp?b_id=<%= b_id %>">
 							<%= b_title %>
 						</a>
 					</td>

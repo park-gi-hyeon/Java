@@ -12,7 +12,29 @@ public class BoardBean {
 	private int B_hit;
 	private String B_pwd;
 	private String B_ip;
+	private int B_ref;
+	private int B_step;
+	private int B_level;
 	
+	
+	public int getB_ref() {
+		return B_ref;
+	}
+	public void setB_ref(int b_ref) {
+		B_ref = b_ref;
+	}
+	public int getB_step() {
+		return B_step;
+	}
+	public void setB_step(int b_step) {
+		B_step = b_step;
+	}
+	public int getB_level() {
+		return B_level;
+	}
+	public void setB_level(int b_level) {
+		B_level = b_level;
+	}
 	public String getB_ip() {
 		return B_ip;
 	}

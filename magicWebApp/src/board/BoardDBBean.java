@@ -10,6 +10,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import javafx.scene.Parent;
 import javafx.scene.layout.Border;
 
 public class BoardDBBean {
@@ -26,25 +27,46 @@ public class BoardDBBean {
 	// 정보를 삽입하는 메소드
 	public int insertBoard(BoardBean board){
 		int re = -1;
-		int num;
+		int number;
 		Connection conn= null;
 		PreparedStatement pstmt = null;
 		String sql ="";
-		ResultSet rs = null;		
+		ResultSet rs = null;
+		int id = board.getB_id(); //부모 글번호
+		int ref = board.getB_ref(); //부모 그룹
+		int step = board.getB_step(); //부모 그룹내 순서
+		int level = board.getB_level(); //부모 그룹내 들여쓰기 정도
 		try {
 			conn = getConnection();
-//			sql = "SELECT MAX(B_ID)FROM BOARDT";			
-//			pstmt = conn.prepareStatement(sql);
-//			rs=pstmt.executeQuery();
-//			
-//			if (rs.next()) {
-//				num = rs.getInt(1)+1;
-//			} else {
-//				num = 1;
-//			}
+			sql = "SELECT MAX(B_ID)FROM BOARDT";			
+			pstmt = conn.prepareStatement(sql);
+			rs=pstmt.executeQuery();
 			
-			sql = "INSERT INTO boardt "
-					+ "VALUES((select nvl(max(b_id),0)+1 from boardt),?,?,?,?,?,?,?,?)";
+			if (rs.next()) {
+				number = rs.getInt(1)+1;
+			} else {
+				number = 1;
+			}
+			
+			if (id != 0) { //답변글이 부모글의 글번호를 가짐(답변)
+//				특정 조건에 step+1로 업데이트
+				sql = "update boardt set b_step = b_step+1 where b_ref=? and b_step > ?";
+				pstmt = conn.prepareStatement(sql);			
+				pstmt.setInt(1, ref);
+				pstmt.setInt(2, step);
+				pstmt.executeUpdate();
+				
+				step = step+1;
+				level = level+1;
+			} else {//부모글인 경우(신규글)
+				ref = number;
+				step = 0;
+				level = 0;
+			}
+			
+			sql = "INSERT INTO boardt(b_id,b_name,b_email,b_title,b_content,"
+					+ "b_date,b_pwd,b_ip,b_ref,b_step,b_level) "
+					+ "VALUES((select nvl(max(b_id),0)+1 from boardt),?,?,?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);			
 //			pstmt.setInt(1, num);
 			pstmt.setString(1, board.getB_name());
@@ -53,9 +75,11 @@ public class BoardDBBean {
 			pstmt.setString(4, board.getB_content());
 			pstmt.setTimestamp(5, board.getB_date());
 //			pstmt.setInt(6, board.getB_hit());
-			pstmt.setInt(6, 0); // insert부분에서 초기값을 설정을 해주지않아서 null일경우 오류문제가 생길 수 있다.
-			pstmt.setString(7, board.getB_pwd());
-			pstmt.setString(8, board.getB_ip());
+			pstmt.setString(6, board.getB_pwd());
+			pstmt.setString(7, board.getB_ip());
+			pstmt.setInt(8,ref);
+			pstmt.setInt(9,step);
+			pstmt.setInt(10,level);
 			
 			pstmt.executeUpdate();
 			re = 1;
@@ -78,7 +102,8 @@ public class BoardDBBean {
 		
 		try {
 			conn = getConnection();
-			String sql = "select * from boardt order by b_id";
+//			order by b_ref desc,b_step asc 최신순이고 답변순
+			String sql = "select * from boardt order by b_ref desc, b_step asc";
 			stmt = conn.prepareStatement(sql);
 			rs= stmt.executeQuery(sql);
 			
@@ -94,6 +119,9 @@ public class BoardDBBean {
 				board.setB_hit(rs.getInt(7));
 				board.setB_pwd(rs.getString(8));
 				board.setB_ip(rs.getString(9));
+				board.setB_ref(rs.getInt(10));
+				board.setB_step(rs.getInt(11));
+				board.setB_level(rs.getInt(12));
 				//여기까지가 1행을 가져와서 저장
 				
 				//행의 데이터를 ArrayList에 저장
@@ -122,14 +150,16 @@ public class BoardDBBean {
 				pstmt.setInt(1, num);
 				rs = pstmt.executeQuery();
 				
-				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd,b_ip "
+				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd,b_ip"
+						+ ",b_ref,b_step,b_level "
 						+ "from boardt where b_id=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, num);
 				rs = pstmt.executeQuery();
 			}else {
 	//			글 내용 보기
-				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd,b_ip "
+				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd,b_ip"
+						+ ",b_ref,b_step,b_level "
 						+ "from boardt where b_id=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, num);
@@ -145,6 +175,9 @@ public class BoardDBBean {
 				board.setB_hit(rs.getInt("b_hit"));
 				board.setB_pwd(rs.getString("b_pwd"));
 				board.setB_ip(rs.getString("b_ip"));
+				board.setB_ref(rs.getInt("b_ref"));
+				board.setB_step(rs.getInt("b_step"));
+				board.setB_level(rs.getInt("b_level"));
 				rs.close();
 				pstmt.close();
 				conn.close();
