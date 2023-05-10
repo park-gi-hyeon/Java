@@ -3,11 +3,12 @@ package Practice;
 public class Test {
 	public static void main(String[] args) {
 		
-		String a = "1,2,3,4,5";
-		String[] b = a.split(",");
+		 int a = 0;
+		  for(int i=1; i<999; i++){
+		    if(i%3==0 && i%2!=0)
+		      a = i;
+		    }
+		    System.out.print(a);
 		
-		for (int i = 0; i < b.length; i++) {
-			System.out.print(b[i]+"");
-		}
 	}
 }

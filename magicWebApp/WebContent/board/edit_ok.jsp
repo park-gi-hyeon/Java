@@ -8,6 +8,9 @@
 <jsp:useBean id="bd" class="board.BoardBean"></jsp:useBean>
 <jsp:setProperty property="*" name="bd"/>
 <%
+ 	//넘어 오는 페이지 번호를 변수에 저장
+	String pageNum = request.getParameter("pageNum");
+	
 	BoardDBBean manager = BoardDBBean.getinstance();
 	int re = manager.editBoard(bd);
 	
@@ -15,7 +18,7 @@
 		%>
 			<script>
 				alert("수정 성공하셨습니다.");
-				location.href="list.jsp";
+				location.href="list.jsp?pageNum=<%= pageNum %>";
 			</script>
 		<%
 	}else if(re==0){// 비밀번호 틀림

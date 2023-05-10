@@ -9,6 +9,9 @@
 </head>
 <body>
 	<%
+		//넘어 오는 페이지 번호를 변수에 저장
+		String pageNum = request.getParameter("pageNum");
+	
 		int num = Integer.parseInt(request.getParameter("b_id"));
 		String pwd = request.getParameter("b_pwd");
 		BoardDBBean db = new BoardDBBean();
@@ -20,7 +23,7 @@
 				<script>
 				//비밀번호 일치로 글목록 이동
 					alert("삭제 성공하였습니다.");
-					location.href="list.jsp";
+					location.href="list.jsp?pageNum"+<%=pageNum%>;
 				</script>
 			<% 
 		}else if(re == -2){//비밀 번호 틀림

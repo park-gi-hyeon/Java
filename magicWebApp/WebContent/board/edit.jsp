@@ -7,6 +7,9 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+	//넘어 오는 페이지 번호를 변수에 저장
+	String pageNum = request.getParameter("pageNum");
+
 	int b_id = Integer.parseInt(request.getParameter("b_id"));
 	BoardDBBean db = BoardDBBean.getinstance();
 	BoardBean bb = db.getBoard(b_id, false);
@@ -21,7 +24,7 @@
 <body>
 	<center>
 		<h1>글 수 정 하 기</h1>
-		<form name="reg_frm" method="post" action="edit_ok.jsp?b_id=<%=b_id%>">
+		<form name="reg_frm" method="post" action="edit_ok.jsp?b_id=<%=b_id%>&pageNum=<%= pageNum %>">
 			<table align="center">
 				<tr height="30">
 					<td width="50">작성자</td>
@@ -54,7 +57,7 @@
 					<td colspan="4">
 						<input type="button" value="글수정" onclick="check_ok()"> &nbsp
 						<input type="reset" value="다시입력">
-						<input type="button" value="글목록" onclick="javascript:window.location='list.jsp'">
+						<input type="button" value="글목록" onclick="javascript:window.location='list.jsp?pageNum=<%=pageNum%>'">
 					</td>
 				</tr>
 			</table>

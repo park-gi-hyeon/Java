@@ -8,6 +8,9 @@
  	%>
 <!DOCTYPE html>
 <%
+	//넘어 오는 페이지 번호를 변수에 저장
+	String pageNum = request.getParameter("pageNum");
+
 	int b_id = Integer.parseInt(request.getParameter("b_id"));
 	BoardDBBean db = new BoardDBBean();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
@@ -47,10 +50,10 @@
 			</tr>
 			<tr height="30" align="center">
 				<td colspan="5" align="right">
-					<input type="button" value="글수정" onclick="javascript:window.location='edit.jsp?b_id=<%=b_id%>'">
-					<input type="reset" value="글 목록" onclick="location='list.jsp'">
-					<input type="button" value="답변글" onclick="javascript:window.location='write.jsp?b_id=<%=b_id%>'"> 
-					<input type="button" value="글삭제" onclick="javascript:window.location='delete.jsp?b_id=<%=b_id%>'">
+					<input type="button" value="글수정" onclick="javascript:window.location='edit.jsp?b_id=<%=b_id%>&pageNum=<%=pageNum%>'">
+					<input type="button" value="글삭제" onclick="javascript:window.location='delete.jsp?b_id=<%=b_id%>&pageNum=<%=pageNum%>'">
+					<input type="button" value="답변글" onclick="javascript:window.location='write.jsp?b_id=<%=b_id%>&pageNum=<%=pageNum%>'"> 
+					<input type="reset" value="글 목록" onclick="location='list.jsp?pageNum=<%=pageNum%>'">
 				</td>
 			</tr>
 		</table>

@@ -2,6 +2,10 @@
 <%@page import="board.BoardDBBean"%>
 <%
     request.setCharacterEncoding("utf-8");
+
+	//넘어 오는 페이지 번호를 변수에 저장
+	String pageNum = request.getParameter("pageNum");
+
  	int b_id = 0,b_ref=1, b_step=0, b_level=0;
  	String b_title="";
 	if(request.getParameter("b_id") != null){//답변글(show.jsp에서 글번호를 가지고 옴)
@@ -81,7 +85,7 @@
 					<td colspan="4">
 						<input type="button" value="글쓰기" onclick="check_ok()"> &nbsp
 						<input type="reset" value="다시입력">
-						<input type="button" value="글목록" onclick="javascript:window.location='list.jsp'">
+						<input type="button" value="글목록" onclick="javascript:window.location='list.jsp?pageNum=<%= pageNum %>'">
 					</td>
 				</tr>
 			</table>

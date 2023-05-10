@@ -7,6 +7,14 @@
     pageEncoding="UTF-8"%>
     <%
     request.setCharacterEncoding("utf-8");
+    
+    //넘어 오는 페이지 번호를 변수에 저장
+    String pageNum = request.getParameter("pageNum");
+    
+   	//넘어오는 페이지 번호가 없으면 1페이지
+    if(pageNum == null){
+    	pageNum = "1";
+    }
  	%>
 <!DOCTYPE html>
 <html>
@@ -20,7 +28,8 @@
 		<table width="600">
 			<tr>
 				<td align="right">
-					<a href="write.jsp">글 쓰 기</a>
+<!-- 					<a href="write.jsp">글 쓰 기</a> -->
+					<a href="write.jsp?pageNum=<%= pageNum %>">글 쓰 기</a>
 				</td>
 			</tr>
 		</table>
@@ -38,7 +47,8 @@
 					BoardDBBean db = BoardDBBean.getinstance();
 				     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 					//호출된 메소드의 데이터 타입으로 받아주면 됨
-					ArrayList<BoardBean> list =db.listBoard();
+// 					ArrayList<BoardBean> list =db.listBoard();
+					ArrayList<BoardBean> list =db.listBoard(pageNum);
 	// 				boardList 에 있는 오라클 데이터를 가져옴
 					for(int i=0; i<list.size(); i++){
 	// 					ArrayList데이터의 BoardBean 객체를 가져온다
@@ -73,7 +83,8 @@
 						}
 					%>
 <!-- 					글 번호를 가지고 글내용 보기 페이지로 이동 -->
-					<a href="show.jsp?b_id=<%= b_id %>">
+<%-- 					<a href="show.jsp?b_id=<%= b_id %>"> --%>
+					<a href="show.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>">
 							<%= b_title %>
 						</a>
 					</td>
@@ -89,6 +100,8 @@
 					}
 				%>
 			</table>
+<!-- 			페이지 표시 4개씩 -->
+			<%= BoardBean.pageNumber(4) %>
 		</center>
 	</form>
 </body>
