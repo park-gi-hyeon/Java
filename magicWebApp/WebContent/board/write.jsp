@@ -5,6 +5,9 @@
 
 	//넘어 오는 페이지 번호를 변수에 저장
 	String pageNum = request.getParameter("pageNum");
+	 if(pageNum == null){
+	    	pageNum = "1";
+	    }
 
  	int b_id = 0,b_ref=1, b_step=0, b_level=0;
  	String b_title="";
@@ -22,6 +25,9 @@
 		b_level = board.getB_level();
 		b_title = board.getB_title();
 	}
+	
+	System.out.println("@@@>b_step "+b_step);
+	System.out.println("@@@>b_level "+b_level);
  %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -36,7 +42,7 @@
 <body>
 	<center>
 		<h1>글 올 리 기</h1>
-		<form name="reg_frm" method="post" action="write_ok.jsp">
+		<form name="reg_frm" method="post" action="write_ok.jsp" enctype="multipart/form-data">
 			<input type="hidden" name="b_id" value="<%= b_id %>">
 			<input type="hidden" name="b_ref" value="<%= b_ref %>">
 			<input type="hidden" name="b_step value="<%= b_step %>">
@@ -68,6 +74,12 @@
 						<% 														
 							}
 						%>
+					</td>
+				</tr>
+				<tr>
+					<td width="80">파   일</td>
+					<td colspan="3" width="140">
+						<input type="file" name="b_fname" size="40" maxlength="80">
 					</td>
 				</tr>
 				<tr>

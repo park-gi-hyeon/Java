@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class server {
 	public static void main(String[] args) {
@@ -77,5 +78,6 @@ public class server {
 		}
 		return Integer.toString(res); //문자열로 리턴하기
 	}
+	
 }
 

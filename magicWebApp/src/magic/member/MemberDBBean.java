@@ -51,6 +51,13 @@ public class MemberDBBean {
 		} catch (Exception e) {
 			System.out.println("추가 실패");
 			e.printStackTrace();
+		}finally{
+			try{
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		return re;
 	}
@@ -67,7 +74,7 @@ public class MemberDBBean {
 		 try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setNString(1, id);//confirm의 매개변수 id와 select문의 ?의 id를 받기위해
+			pstmt.setString(1, id);//confirm의 매개변수 id와 select문의 ?의 id를 받기위해
 //			Select 문은 excuteQuery 메소드로 호출
 			rs = pstmt.executeQuery();
 			
@@ -81,6 +88,14 @@ public class MemberDBBean {
 			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally{
+			try{
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+				if(rs != null) rs.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		 return re;
 	}
@@ -97,7 +112,7 @@ public class MemberDBBean {
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setNString(1, id);//confirm의 매개변수 id와 select문의 ?의 id를 받기위해
+			pstmt.setString(1, id);//confirm의 매개변수 id와 select문의 ?의 id를 받기위해
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {//아이디가 일치하는 로우 존재
@@ -112,6 +127,14 @@ public class MemberDBBean {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally{
+			try{
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+				if(rs != null) rs.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		return re;
 	}
@@ -128,7 +151,7 @@ public class MemberDBBean {
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setNString(1, id);
+			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			
 			
@@ -140,11 +163,16 @@ public class MemberDBBean {
 				member.setMem_email(rs.getString("mem_email"));
 				member.setMem_address(rs.getString("mem_address"));
 			} 
-			rs.close();
-			pstmt.close();
-			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally{
+			try{
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+				if(rs != null) rs.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		return member;
 	}
@@ -168,6 +196,13 @@ public class MemberDBBean {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("변경실패");
+		}finally{
+			try{
+				if(conn != null) conn.close();
+				if(pstmt != null) pstmt.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		return re;
 	}

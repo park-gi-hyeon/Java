@@ -38,6 +38,7 @@
 			<table border="1" align="center" cellspacing="0">
 				<tr>
 					<td align="center" width="80">번호</td>
+					<td align="center" width="80">첨부파일</td>
 					<td align="center" width="500">글제목</td>
 					<td align="center" width="200">작성자</td>
 					<td align="center" width="200">작성일</td>
@@ -62,11 +63,21 @@
 						Timestamp b_date = board.getB_date();
 						int b_hit = board.getB_hit();
 						int b_level = board.getB_level();
+						int b_fsize = board.getB_fsize();
 				%>
 				<tr bgcolor="#f7f7f7" 
 				onmouseover="this.style.backgroundColor='#eeeeef'" 
 				onmouseout="this.style.backgroundColor='#f7f7f7'">
 					<td align="center"><%= b_id %></td>
+					<td>
+						<%
+							if(b_fsize > 0){
+						%>
+								<img src="../images/zip.gif">		
+						<% 
+							}
+						%>
+					</td>
 					<td>
 					<%
 // 						b_level 기준으로 화살표 이미지를 들여쓰기로 출력

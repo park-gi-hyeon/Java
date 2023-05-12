@@ -15,7 +15,27 @@ public class BoardBean {
 	private int B_ref;
 	private int B_step;
 	private int B_level;
+	private String B_fname;
+	private int B_fsize;
 	
+	public String getB_fname() {
+		return B_fname;
+	}
+
+
+	public void setB_fname(String b_fname) {
+		B_fname = b_fname;
+	}
+
+
+	public int getB_fsize() {
+		return B_fsize;
+	}
+
+
+	public void setB_fsize(int b_fsize) {
+		B_fsize = b_fsize;
+	}
 	public static int pageSize=10;//한 페이지당 10개 출력물
 	public static int pageCount=1;//페이지 개수 지정 변수
 	public static int pageNum=1;//페이지 번호

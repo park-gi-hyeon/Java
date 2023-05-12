@@ -1,3 +1,5 @@
+<%@page import="java.io.File"%>
+<%@page import="board.BoardBean"%>
 <%@page import="board.BoardDBBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -13,8 +15,14 @@
 		String pageNum = request.getParameter("pageNum");
 	
 		int num = Integer.parseInt(request.getParameter("b_id"));
-		String pwd = request.getParameter("b_pwd");
+		String pwd = request.getParameter("b_pwd");		
 		BoardDBBean db = new BoardDBBean();
+		
+		BoardBean board = db.getBoard(num, false);
+		String fName = board.getB_fname();
+		String up="D:\\dev\\work_java\\.metadata\\.plugins\\org.eclipse.wst.server.core\\"
+				+"tmp0\\wtpwebapps\\magicWebApp\\upload\\";//파일경로 \하나씩 더 추가해줘야함
+		
 // 		글 삭제를 위해서 글 번호와 비밀번호를 가지고 메소드 호출
 		int re = db.deleteBoard(num,pwd);
 		
@@ -26,6 +34,12 @@
 					location.href="list.jsp?pageNum"+<%=pageNum%>;
 				</script>
 			<% 
+			
+			if(fName != null){
+				File file = new File(up + fName);
+				file.delete();
+			}
+			
 		}else if(re == -2){//비밀 번호 틀림
 			%>
 			<script>

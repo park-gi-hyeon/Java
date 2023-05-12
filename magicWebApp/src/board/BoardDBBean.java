@@ -26,20 +26,20 @@ public class BoardDBBean {
 	}
 	// 정보를 삽입하는 메소드
 	public int insertBoard(BoardBean board){
-		int re = -1;
-		int number;
 		Connection conn= null;
 		PreparedStatement pstmt = null;
-		String sql ="";
 		ResultSet rs = null;
+		int re = -1;
+		int number;
+		String sql ="";
 		int id = board.getB_id(); //부모 글번호
 		int ref = board.getB_ref(); //부모 그룹
 		int step = board.getB_step(); //부모 그룹내 순서
 		int level = board.getB_level(); //부모 그룹내 들여쓰기 정도
 		try {
 			conn = getConnection();
-			sql = "SELECT MAX(B_ID)FROM BOARDT";			
-			pstmt = conn.prepareStatement(sql);
+			String sql2 = "SELECT MAX(B_ID)FROM BOARDT";			
+			pstmt = conn.prepareStatement(sql2);
 			rs=pstmt.executeQuery();
 			
 			if (rs.next()) {
@@ -65,8 +65,8 @@ public class BoardDBBean {
 			}
 			
 			sql = "INSERT INTO boardt(b_id,b_name,b_email,b_title,b_content,"
-					+ "b_date,b_pwd,b_ip,b_ref,b_step,b_level) "
-					+ "VALUES((select nvl(max(b_id),0)+1 from boardt),?,?,?,?,?,?,?,?,?,?)";
+					+ "b_date,b_pwd,b_ip,b_ref,b_step,b_level,b_fname,b_fsize) "
+					+ "VALUES((select nvl(max(b_id),0)+1 from boardt),?,?,?,?,?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);			
 //			pstmt.setInt(1, num);
 			pstmt.setString(1, board.getB_name());
@@ -80,6 +80,8 @@ public class BoardDBBean {
 			pstmt.setInt(8,ref);
 			pstmt.setInt(9,step);
 			pstmt.setInt(10,level);
+			pstmt.setString(11, board.getB_fname());
+			pstmt.setInt(12, board.getB_fsize());
 			
 			pstmt.executeUpdate();
 			re = 1;
@@ -160,6 +162,8 @@ public class BoardDBBean {
 					board.setB_ref(rs.getInt(10));
 					board.setB_step(rs.getInt(11));
 					board.setB_level(rs.getInt(12));
+					board.setB_fname(rs.getString(13));
+					board.setB_fsize(rs.getInt(14));
 					//여기까지가 1행을 가져와서 저장
 					
 					//행의 데이터를 ArrayList에 저장
@@ -223,7 +227,7 @@ public class BoardDBBean {
 				rs = pstmt.executeQuery();
 				
 				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd,b_ip"
-						+ ",b_ref,b_step,b_level "
+						+ ",b_ref,b_step,b_level,b_fname,b_fsize "
 						+ "from boardt where b_id=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, num);
@@ -231,7 +235,7 @@ public class BoardDBBean {
 			}else {
 	//			글 내용 보기
 				sql = "select b_id,b_name,b_email,b_title,b_content,b_date,b_hit,b_pwd,b_ip"
-						+ ",b_ref,b_step,b_level "
+						+ ",b_ref,b_step,b_level,b_fname,b_fsize "
 						+ "from boardt where b_id=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, num);
@@ -250,6 +254,8 @@ public class BoardDBBean {
 				board.setB_ref(rs.getInt("b_ref"));
 				board.setB_step(rs.getInt("b_step"));
 				board.setB_level(rs.getInt("b_level"));
+				board.setB_fname(rs.getString("b_fname"));
+				board.setB_fsize(rs.getInt("b_fsize"));
 				rs.close();
 				pstmt.close();
 				conn.close();

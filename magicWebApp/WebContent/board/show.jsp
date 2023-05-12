@@ -41,6 +41,22 @@
 				<td><%= sdf.format(bb.getB_date()) %></td>
 			</tr>
 			<tr height="30" align="center">
+				<td width="110">파&nbsp;일</td>	
+				<td colspan="3">
+					&nbsp;
+					<%
+						if(bb.getB_fname() != null){
+					%>
+							<img  src="../images/zip.gif">
+							<a href="../upload/<%= bb.getB_fname() %>">
+								원본파일 : <%= bb.getB_fname() %>
+							</a>
+					<%
+						}
+					%>
+				</td>		
+			</tr>
+			<tr height="30" align="center">
 				<td width="100">글제목</td>
 				<td width="200" align="left" colspan="4"><%= bb.getB_title() %></td>
 			</tr>
